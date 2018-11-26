@@ -14332,6 +14332,7 @@ Vue.component('painel', __webpack_require__(48));
 Vue.component('caixa', __webpack_require__(54));
 Vue.component('pagina', __webpack_require__(59));
 Vue.component('tabela-lista', __webpack_require__(62));
+Vue.component('migalhas', __webpack_require__(69));
 
 // const files = require.context('./', true, /\.vue$/i)
 
@@ -47820,9 +47821,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['titulo', 'url', 'label']
+    props: ['titulo', 'url', 'label', 'cor'],
+    computed: {
+        defineClasse: function defineClasse() {
+            return "navbar navbar-expand-md navbar-light navbar-laravel " + (this.cor || "bg-light");
+        }
+    }
 });
 
 /***/ }),
@@ -47833,51 +47841,47 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "nav",
-    { staticClass: "navbar navbar-expand-md navbar-light navbar-laravel" },
-    [
-      _c("div", { staticClass: "container" }, [
-        _c("a", { staticClass: "navbar-brand", attrs: { href: _vm.url } }, [
-          _vm._v("\n            " + _vm._s(_vm.titulo) + "\n        ")
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "navbar-toggler",
-            attrs: {
-              type: "button",
-              "data-toggle": "collapse",
-              "data-target": "#navbarSupportedContent",
-              "aria-controls": "navbarSupportedContent",
-              "aria-expanded": "false",
-              "aria-label": _vm.label
-            }
-          },
-          [_c("span", { staticClass: "navbar-toggler-icon" })]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "collapse navbar-collapse",
-            attrs: { id: "navbarSupportedContent" }
-          },
-          [
-            _c("ul", { staticClass: "navbar-nav mr-auto" }),
-            _vm._v(" "),
-            _c(
-              "ul",
-              { staticClass: "navbar-nav ml-auto" },
-              [_vm._t("default")],
-              2
-            )
-          ]
-        )
-      ])
-    ]
-  )
+  return _c("nav", { class: _vm.defineClasse }, [
+    _c("div", { staticClass: "container" }, [
+      _c("a", { staticClass: "navbar-brand", attrs: { href: _vm.url } }, [
+        _vm._v(_vm._s(_vm.titulo))
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "navbar-toggler",
+          attrs: {
+            type: "button",
+            "data-toggle": "collapse",
+            "data-target": "#navbarSupportedContent",
+            "aria-controls": "navbarSupportedContent",
+            "aria-expanded": "false",
+            "aria-label": _vm.label
+          }
+        },
+        [_c("span", { staticClass: "navbar-toggler-icon" })]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "collapse navbar-collapse",
+          attrs: { id: "navbarSupportedContent" }
+        },
+        [
+          _c("ul", { staticClass: "navbar-nav mr-auto" }),
+          _vm._v(" "),
+          _c(
+            "ul",
+            { staticClass: "navbar-nav ml-auto" },
+            [_vm._t("default")],
+            2
+          )
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -48445,10 +48449,95 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['titulos', 'itens', 'criar', 'deletar', 'editar', 'detalhe', 'token']
+    props: ['titulos', 'itens', 'criar', 'deletar', 'editar', 'detalhe', 'token', 'ordem', 'ordemcol'],
+    data: function data() {
+        return {
+            buscar: '',
+            ordemAux: this.ordem || "asc",
+            ordemColAux: this.ordemcol || "0"
+        };
+    },
+    methods: {
+        sendForm: function sendForm(index) {
+            document.getElementById(index).submit();
+        },
+        ordenaColuna: function ordenaColuna(coluna) {
+
+            this.ordemColAux = coluna;
+            if (this.ordemAux.toLowerCase() == "asc") {
+                this.ordemAux = "desc";
+            } else {
+                this.ordemAux = "asc";
+            }
+        }
+    },
+    computed: {
+        lista: function lista() {
+            var _this = this;
+
+            var ordem = this.ordemAux;
+            var orderCol = this.ordemColAux;
+
+            ordem = ordem.toLowerCase();
+            orderCol = parseInt(orderCol);
+
+            if (ordem == "asc") {
+
+                this.itens.sort(function (a, b) {
+                    if (a[orderCol] > b[orderCol]) {
+                        return 1;
+                    }
+                    if (a[orderCol] < b[orderCol]) {
+                        return -1;
+                    }
+
+                    return 0;
+                });
+            } else {
+
+                this.itens.sort(function (a, b) {
+                    if (a[orderCol] < b[orderCol]) {
+                        return 1;
+                    }
+                    if (a[orderCol] > b[orderCol]) {
+                        return -1;
+                    }
+
+                    return 0;
+                });
+            }
+
+            return this.itens.filter(function (res) {
+
+                for (var k = 0; k < res.length; k++) {
+                    if (res[k].toString().toLowerCase().indexOf(_this.buscar.toString().toLowerCase()) >= 0) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+
+            return this.itens;
+        }
+    }
 
 });
 
@@ -48461,9 +48550,39 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.criar
-      ? _c("a", { attrs: { href: _vm.criar } }, [_vm._v("Criar")])
-      : _vm._e(),
+    _c("div", { staticClass: "form" }, [
+      _vm.criar
+        ? _c(
+            "a",
+            { staticClass: "btn btn-success", attrs: { href: _vm.criar } },
+            [_c("i", { staticClass: "fa fa-plus" }), _vm._v(" Criar\n    ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group float-right bg-dark col-md-3" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.buscar,
+              expression: "buscar"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "search", placeholder: "Buscar" },
+          domProps: { value: _vm.buscar },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.buscar = $event.target.value
+            }
+          }
+        })
+      ])
+    ]),
     _vm._v(" "),
     _c(
       "table",
@@ -48474,9 +48593,20 @@ var render = function() {
             "tr",
             [
               _vm._l(_vm.titulos, function(titulo, index) {
-                return _c("th", { key: index, attrs: { titulo: titulo } }, [
-                  _vm._v(_vm._s(titulo))
-                ])
+                return _c(
+                  "th",
+                  {
+                    key: index,
+                    staticStyle: { cursor: "pointer" },
+                    attrs: { titulo: titulo },
+                    on: {
+                      click: function($event) {
+                        _vm.ordenaColuna(index)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(titulo))]
+                )
               }),
               _vm._v(" "),
               _vm.detalhe || _vm.editar || _vm.deletar
@@ -48489,7 +48619,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.itens, function(item, index) {
+          _vm._l(_vm.lista, function(item, index) {
             return _c(
               "tr",
               { key: index },
@@ -48500,21 +48630,96 @@ var render = function() {
                 _vm._v(" "),
                 _vm.detalhe || _vm.editar || _vm.deletar
                   ? _c("td", [
-                      _vm.detalhe
-                        ? _c("a", { attrs: { href: _vm.detalhe } }, [
-                            _vm._v("Detalhe")
+                      _vm.deletar && _vm.token
+                        ? _c(
+                            "form",
+                            {
+                              attrs: {
+                                id: index,
+                                action: "deletar",
+                                method: "post"
+                              }
+                            },
+                            [
+                              _c("input", {
+                                attrs: {
+                                  type: "hidden",
+                                  name: "_method",
+                                  value: "DELETE"
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("input", {
+                                attrs: { type: "hidden", name: "_token" },
+                                domProps: { value: _vm.token }
+                              }),
+                              _vm._v(" "),
+                              _vm.detalhe
+                                ? _c("a", { attrs: { href: _vm.detalhe } }, [
+                                    _vm._v("Detalhe")
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" |\n            "),
+                              _vm.editar
+                                ? _c("a", { attrs: { href: _vm.editar } }, [
+                                    _vm._v("Editar")
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" |\n            "),
+                              _vm.deletar
+                                ? _c(
+                                    "a",
+                                    {
+                                      attrs: { href: _vm.deletar },
+                                      on: {
+                                        click: function($event) {
+                                          _vm.sendForm(index)
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Deletar")]
+                                  )
+                                : _vm._e()
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      !_vm.token
+                        ? _c("span", [
+                            _vm.detalhe
+                              ? _c("a", { attrs: { href: _vm.detalhe } }, [
+                                  _vm._v("Detalhe")
+                                ])
+                              : _vm._e(),
+                            _vm._v(" |\n            "),
+                            _vm.editar
+                              ? _c("a", { attrs: { href: _vm.editar } }, [
+                                  _vm._v("Editar")
+                                ])
+                              : _vm._e(),
+                            _vm._v(" |\n            "),
+                            _vm.deletar
+                              ? _c("a", { attrs: { href: _vm.deletar } }, [
+                                  _vm._v("Deletar")
+                                ])
+                              : _vm._e()
                           ])
                         : _vm._e(),
-                      _vm._v(" | \n                    "),
-                      _vm.editar
-                        ? _c("a", { attrs: { href: _vm.editar } }, [
-                            _vm._v("Editar")
-                          ])
-                        : _vm._e(),
-                      _vm._v(" | \n                    "),
-                      _vm.deletar
-                        ? _c("a", { attrs: { href: _vm.deletar } }, [
-                            _vm._v("Deletar")
+                      _vm._v(" "),
+                      _vm.token && !_vm.deletar
+                        ? _c("span", [
+                            _vm.detalhe
+                              ? _c("a", { attrs: { href: _vm.detalhe } }, [
+                                  _vm._v("Detalhe")
+                                ])
+                              : _vm._e(),
+                            _vm._v(" |\n            "),
+                            _vm.editar
+                              ? _c("a", { attrs: { href: _vm.editar } }, [
+                                  _vm._v("Editar")
+                                ])
+                              : _vm._e(),
+                            _vm._v(" |\n          ")
                           ])
                         : _vm._e()
                     ])
@@ -48543,6 +48748,141 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(70)
+/* template */
+var __vue_template__ = __webpack_require__(71)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/Migalhas.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-32b7f2e2", Component.options)
+  } else {
+    hotAPI.reload("data-v-32b7f2e2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['itens'],
+    computed: {
+
+        defineClass: function defineClass() {
+            if (this.url) {
+                return "breadcrumb-item active";
+            } else {
+                return "breadcrumb-item";
+            }
+        }
+
+    }
+
+});
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "nav",
+    { staticClass: "float-right", attrs: { "aria-label": "breadcrumb" } },
+    [
+      _c(
+        "ol",
+        { staticClass: "breadcrumb" },
+        _vm._l(_vm.itens, function(item, index) {
+          return _c("li", { key: index, class: _vm.defineClass }, [
+            item.url
+              ? _c("a", { attrs: { href: item.url } }, [
+                  _vm._v(_vm._s(item.titulo))
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !item.url
+              ? _c("span", [_vm._v(" " + _vm._s(item.titulo) + " ")])
+              : _vm._e()
+          ])
+        })
+      )
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-32b7f2e2", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

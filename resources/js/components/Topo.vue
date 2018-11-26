@@ -1,33 +1,42 @@
 <template>
+  <nav v-bind:class="defineClasse">
+    <div class="container">
+      <a class="navbar-brand" v-bind:href="url">{{ titulo }}</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        v-bind:aria-label="label"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-        <div class="container">
-            <a class="navbar-brand" v-bind:href="url">
-                {{ titulo }}
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" v-bind:aria-label="label">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Left Side Of Navbar -->
+        <ul class="navbar-nav mr-auto"></ul>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav mr-auto">
-
-                </ul>
-
-                <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ml-auto">
-                    <!-- Authentication Links -->
-                   <slot></slot>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+        <!-- Right Side Of Navbar -->
+        <ul class="navbar-nav ml-auto">
+          <!-- Authentication Links -->
+          <slot></slot>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
     export default {
-        props: ['titulo', 'url', 'label']
+        props: ['titulo', 'url', 'label', 'cor'],
+         computed: {
+            defineClasse: function() {
+                return "navbar navbar-expand-md navbar-light navbar-laravel "+ (this.cor || "bg-light");
+            }
+         }
     }
+
+
 </script>

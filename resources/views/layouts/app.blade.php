@@ -22,7 +22,7 @@
 <body>
     <div id="app">
 
-        <topo titulo="{{ config('app.name', 'Laravel') }}" url="{{ url('/') }}" label="{{ __('Toggle navigation') }}">
+        <topo titulo="{{ config('app.name', 'Laravel') }}" url="{{ url('/') }}" label="{{ __('Toggle navigation') }}" cor="bg-primary">
 
             @guest
                 <li class="nav-item">
@@ -56,7 +56,7 @@
         </topo>
 
 
-        <main class="py-4">
+        <main class="py-2">
             @yield('content')
         </main>
     </div>
