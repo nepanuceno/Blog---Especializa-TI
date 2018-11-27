@@ -4,6 +4,8 @@
     <migalhas v-bind:itens="{{ $migalhas }}"></migalhas>
     <painel titulo="Lista de Artigos" tamanho="12" cor="bg-dark">
 
+        <modallink nomemodal="meumodal" label="Mostrar"></modallink>
+
         <tabela-lista v-bind:titulos="['#','Titulo', 'Autor','Descrição', 'Data']" v-bind:itens="[
             ['1','Como Falir uma Starup com Estilo e Confiança 1','Paulo Roberto Torres 1', 'Nesse trabalho, ensino como foder o ciclo de vida de uma boa idea(só na sua cabeça arrogante)', '25/11/2018'],
             ['2','Como Falir uma Starup com Estilo e Confiança 2','Paulo Roberto Torres 2', 'Nesse trabalho, ensino como foder o ciclo de vida de uma boa idea(só na sua cabeça arrogante)', '25/11/2018'],
@@ -14,5 +16,11 @@
         </tabela-lista>
 
     </painel>
+    <modal nome="meumodal" titulo="Modal de Teste">
+        Blá Blá Blá
+        Blá Blá Blá
+        Blá Blá Blá
+        Blá Blá Blá
+    </modal>
 </pagina>
 @endsection

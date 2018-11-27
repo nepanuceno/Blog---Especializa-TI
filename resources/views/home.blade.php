@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<migalhas v-bind:itens="{{ $migalhas }}"></migalhas>
 <pagina tamanho="12">
-    <painel titulo="PAINEL" tamanho="8" cor="bg-light" fontcolor="text-dark">
+
+    <painel titulo="PAINEL" tamanho="12" cor="bg-dark" fontcolor="text-dark">
         <div class="row">
             {{-- <painel titulo="Sub-Painel" conteudo="Painel 3"  subtitulo="UM" cor="bg-warning" fontcolor="text-dark" tamanho="4"> </painel>
             <painel titulo="Sub-Painel" conteudo="Painel 4"  subtitulo="DOIS" cor="bg-success" fontcolor="text-danger" tamanho="4"> </painel>
