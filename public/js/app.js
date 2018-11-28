@@ -48467,81 +48467,121 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-
-    props: ['titulos', 'itens', 'criar', 'deletar', 'editar', 'detalhe', 'token', 'ordem', 'ordemcol'],
-    data: function data() {
-        return {
-            buscar: '',
-            ordemAux: this.ordem || "asc",
-            ordemColAux: this.ordemcol || "0"
-        };
+  props: ["titulos", "itens", "criar", "deletar", "editar", "detalhe", "token", "ordem", "ordemcol", "modal"],
+  data: function data() {
+    return {
+      buscar: "",
+      ordemAux: this.ordem || "asc",
+      ordemColAux: this.ordemcol || "0"
+    };
+  },
+  methods: {
+    sendForm: function sendForm(index) {
+      document.getElementById(index).submit();
     },
-    methods: {
-        sendForm: function sendForm(index) {
-            document.getElementById(index).submit();
-        },
-        ordenaColuna: function ordenaColuna(coluna) {
-
-            this.ordemColAux = coluna;
-            if (this.ordemAux.toLowerCase() == "asc") {
-                this.ordemAux = "desc";
-            } else {
-                this.ordemAux = "asc";
-            }
-        }
-    },
-    computed: {
-        lista: function lista() {
-            var _this = this;
-
-            var ordem = this.ordemAux;
-            var orderCol = this.ordemColAux;
-
-            ordem = ordem.toLowerCase();
-            orderCol = parseInt(orderCol);
-
-            if (ordem == "asc") {
-
-                this.itens.sort(function (a, b) {
-                    if (a[orderCol] > b[orderCol]) {
-                        return 1;
-                    }
-                    if (a[orderCol] < b[orderCol]) {
-                        return -1;
-                    }
-
-                    return 0;
-                });
-            } else {
-
-                this.itens.sort(function (a, b) {
-                    if (a[orderCol] < b[orderCol]) {
-                        return 1;
-                    }
-                    if (a[orderCol] > b[orderCol]) {
-                        return -1;
-                    }
-
-                    return 0;
-                });
-            }
-
-            return this.itens.filter(function (res) {
-
-                for (var k = 0; k < res.length; k++) {
-                    if (res[k].toString().toLowerCase().indexOf(_this.buscar.toString().toLowerCase()) >= 0) {
-                        return true;
-                    }
-                }
-                return false;
-            });
-
-            return this.itens;
-        }
+    ordenaColuna: function ordenaColuna(coluna) {
+      this.ordemColAux = coluna;
+      if (this.ordemAux.toLowerCase() == "asc") {
+        this.ordemAux = "desc";
+      } else {
+        this.ordemAux = "asc";
+      }
     }
+  },
+  computed: {
+    lista: function lista() {
+      var _this = this;
 
+      var ordem = this.ordemAux;
+      var orderCol = this.ordemColAux;
+
+      ordem = ordem.toLowerCase();
+      orderCol = parseInt(orderCol);
+
+      if (ordem == "asc") {
+        this.itens.sort(function (a, b) {
+          if (Object.values(a)[orderCol] > Object.values(b)[orderCol]) {
+            return 1;
+          }
+          if (Object.values(a)[orderCol] < Object.values(b)[orderCol]) {
+            return -1;
+          }
+
+          return 0;
+        });
+      } else {
+        this.itens.sort(function (a, b) {
+          if (Object.values(a)[orderCol] < Object.values(b)[orderCol]) {
+            return 1;
+          }
+          if (Object.values(a)[orderCol] > Object.values(b)[orderCol]) {
+            return -1;
+          }
+
+          return 0;
+        });
+      }
+
+      if (this.buscar) {
+        return this.itens.filter(function (res) {
+          for (var k = 0; k < res.length; k++) {
+            if (res[k].toString().toLowerCase().indexOf(_this.buscar.toString().toLowerCase()) >= 0) {
+              return true;
+            }
+          }
+          return false;
+        });
+      }
+
+      return this.itens;
+    }
+  }
 });
 
 /***/ }),
@@ -48553,39 +48593,50 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "form" }, [
-      _vm.criar
-        ? _c(
-            "a",
-            { staticClass: "btn btn-success", attrs: { href: _vm.criar } },
-            [_c("i", { staticClass: "fa fa-plus" }), _vm._v(" Criar\n    ")]
-          )
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group float-right bg-dark col-md-3" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.buscar,
-              expression: "buscar"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "search", placeholder: "Buscar" },
-          domProps: { value: _vm.buscar },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+    _c(
+      "div",
+      { staticClass: "form" },
+      [
+        _vm.criar && !_vm.modal
+          ? _c(
+              "a",
+              { staticClass: "btn btn-success", attrs: { href: _vm.criar } },
+              [_c("i", { staticClass: "fa fa-plus" }), _vm._v(" Criar\n    ")]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.criar && _vm.modal
+          ? _c("modallink", {
+              attrs: { nomemodal: "adicionar", label: "Criar" }
+            })
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group float-right bg-dark col-md-3" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.buscar,
+                expression: "buscar"
               }
-              _vm.buscar = $event.target.value
+            ],
+            staticClass: "form-control",
+            attrs: { type: "search", placeholder: "Buscar" },
+            domProps: { value: _vm.buscar },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.buscar = $event.target.value
+              }
             }
-          }
-        })
-      ])
-    ]),
+          })
+        ])
+      ],
+      1
+    ),
     _vm._v(" "),
     _c(
       "table",
@@ -48657,19 +48708,39 @@ var render = function() {
                                 domProps: { value: _vm.token }
                               }),
                               _vm._v(" "),
-                              _vm.detalhe
+                              _vm.detalhe && !_vm.modal
                                 ? _c("a", { attrs: { href: _vm.detalhe } }, [
-                                    _vm._v("Detalhe")
+                                    _vm._v("Detalhe |")
                                   ])
                                 : _vm._e(),
                               _vm._v(" |\n            "),
-                              _vm.editar
+                              _vm.detalhe && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "detalhe",
+                                      label: "Detalhe",
+                                      cor: "btn-success"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.editar && !_vm.modal
                                 ? _c("a", { attrs: { href: _vm.editar } }, [
                                     _vm._v("Editar")
                                   ])
                                 : _vm._e(),
                               _vm._v(" |\n            "),
-                              _vm.deletar
+                              _vm.editar && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "editar",
+                                      label: "Editar",
+                                      cor: "btn-warning"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.deletar && !_vm.modal
                                 ? _c(
                                     "a",
                                     {
@@ -48682,48 +48753,116 @@ var render = function() {
                                     },
                                     [_vm._v("Deletar")]
                                   )
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.deletar && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "deletar",
+                                      label: "Deletar",
+                                      cor: "btn-danger"
+                                    }
+                                  })
                                 : _vm._e()
-                            ]
+                            ],
+                            1
                           )
                         : _vm._e(),
                       _vm._v(" "),
                       !_vm.token
-                        ? _c("span", [
-                            _vm.detalhe
-                              ? _c("a", { attrs: { href: _vm.detalhe } }, [
-                                  _vm._v("Detalhe")
-                                ])
-                              : _vm._e(),
-                            _vm._v(" |\n            "),
-                            _vm.editar
-                              ? _c("a", { attrs: { href: _vm.editar } }, [
-                                  _vm._v("Editar")
-                                ])
-                              : _vm._e(),
-                            _vm._v(" |\n            "),
-                            _vm.deletar
-                              ? _c("a", { attrs: { href: _vm.deletar } }, [
-                                  _vm._v("Deletar")
-                                ])
-                              : _vm._e()
-                          ])
+                        ? _c(
+                            "span",
+                            [
+                              _vm.detalhe && !_vm.modal
+                                ? _c("a", { attrs: { href: _vm.detalhe } }, [
+                                    _vm._v("Detalhe |")
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.detalhe && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "detalhe",
+                                      label: "Detalhe",
+                                      cor: "btn-success"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.editar && !_vm.modal
+                                ? _c("a", { attrs: { href: _vm.editar } }, [
+                                    _vm._v("Editar |")
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.editar && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "editar",
+                                      label: "Editar",
+                                      cor: "btn-warning"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.deletar && !_vm.modal
+                                ? _c("a", { attrs: { href: _vm.deletar } }, [
+                                    _vm._v("Deletar")
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.deletar && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "deletar",
+                                      label: "Deletar",
+                                      cor: "btn-danger"
+                                    }
+                                  })
+                                : _vm._e()
+                            ],
+                            1
+                          )
                         : _vm._e(),
                       _vm._v(" "),
                       _vm.token && !_vm.deletar
-                        ? _c("span", [
-                            _vm.detalhe
-                              ? _c("a", { attrs: { href: _vm.detalhe } }, [
-                                  _vm._v("Detalhe")
-                                ])
-                              : _vm._e(),
-                            _vm._v(" |\n            "),
-                            _vm.editar
-                              ? _c("a", { attrs: { href: _vm.editar } }, [
-                                  _vm._v("Editar")
-                                ])
-                              : _vm._e(),
-                            _vm._v(" |\n          ")
-                          ])
+                        ? _c(
+                            "span",
+                            [
+                              _vm.detalhe && !_vm.modal
+                                ? _c("a", { attrs: { href: _vm.detalhe } }, [
+                                    _vm._v("Detalhe |")
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.detalhe && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "detalhe",
+                                      label: "Detalhe",
+                                      cor: "btn-success"
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.editar && !_vm.modal
+                                ? _c("a", { attrs: { href: _vm.editar } }, [
+                                    _vm._v("Editar")
+                                  ])
+                                : _vm._e(),
+                              _vm._v(" |\n            "),
+                              _vm.editar && _vm.modal
+                                ? _c("modallink", {
+                                    attrs: {
+                                      nomemodal: "editar",
+                                      label: "Editar",
+                                      cor: "btn-warning"
+                                    }
+                                  })
+                                : _vm._e()
+                            ],
+                            1
+                          )
                         : _vm._e()
                     ])
                   : _vm._e()
@@ -48950,10 +49089,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['nome', 'titulo'],
+    props: ['nome', 'titulo', 'footer', 'cor'],
     computed: {
         setNome: function setNome() {
             return this.nome;
+        },
+
+        setClass: function setClass() {
+            return "modal-body " + this.cor + " " + this.corfonte;
         }
     }
 
@@ -48992,7 +49135,7 @@ var render = function() {
               _c(
                 "h5",
                 {
-                  staticClass: "modal-title",
+                  staticClass: "modal-title ",
                   attrs: { id: "exampleModalLongTitle" }
                 },
                 [_vm._v(_vm._s(_vm.titulo))]
@@ -49001,9 +49144,29 @@ var render = function() {
               _vm._m(0)
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "modal-body" }, [_vm._t("default")], 2),
+            _c("div", { class: _vm.setClass }, [_vm._t("default")], 2),
             _vm._v(" "),
-            _vm._m(1)
+            _vm.footer == "sim"
+              ? _c("div", { staticClass: "modal-footer" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary",
+                      attrs: { type: "button", "data-dismiss": "modal" }
+                    },
+                    [_vm._v("Fechar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" }
+                    },
+                    [_vm._v("OK")]
+                  )
+                ])
+              : _vm._e()
           ])
         ]
       )
@@ -49027,27 +49190,6 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
-      )
-    ])
   }
 ]
 render._withStripped = true
@@ -49125,10 +49267,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-    props: ['nomemodal', 'label'],
+    props: ['nomemodal', 'label', 'cor'],
     computed: {
         setNome: function setNome() {
             return "#" + this.nomemodal;
+        },
+
+        setClass: function setClass() {
+            return "btn " + (this.cor || "btn-primary");
         }
     }
 
@@ -49145,14 +49291,14 @@ var render = function() {
   return _c(
     "button",
     {
-      staticClass: "btn btn-primary",
+      class: _vm.setClass,
       attrs: {
         type: "button",
         "data-toggle": "modal",
         "data-target": _vm.setNome
       }
     },
-    [_vm._v(_vm._s(_vm.label))]
+    [_c("i", { staticClass: "fa fa-plus" }), _vm._v(" " + _vm._s(_vm.label))]
   )
 }
 var staticRenderFns = []

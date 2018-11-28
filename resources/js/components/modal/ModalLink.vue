@@ -2,19 +2,23 @@
   <!-- Button trigger modal -->
   <button
     type="button"
-    class="btn btn-primary"
+    v-bind:class="setClass"
     data-toggle="modal"
     v-bind:data-target="setNome"
-  >{{ label }}</button>
+  > <i class="fa fa-plus"></i> {{ label }}</button>
 </template>
 
 <script>
 export default {
 
-    props:['nomemodal','label'],
+    props:['nomemodal','label', 'cor'],
      computed: {
         setNome: function(){
-            return "#"+this.nomemodal
+            return "#"+this.nomemodal;
+        },
+
+        setClass: function(){
+            return "btn "+(this.cor || "btn-primary");
         }
     }
     
