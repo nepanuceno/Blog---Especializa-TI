@@ -7,7 +7,7 @@
       <modallink v-if="criar && modal" nomemodal="adicionar" label="Criar"></modallink>
 
       <div class="form-group float-right bg-dark col-md-3">
-        <input type="search" class="form-control" placeholder="Buscar" v-model="buscar">
+        <input type="search" class="form-control" placeholder="Buscar" v-model="buscar" style="background-color:rgba(0,0,0,0.2); border: 1px solid rgba(0,0,0,0.3); border-bottom: 1px solid green">
       </div>
     </div>
     <table class="table table-hover table-striped bg-color='primary'">
@@ -30,25 +30,44 @@
           <td v-for="i in item" :key="i">{{ i }}</td>
 
           <td v-if="detalhe || editar || deletar">
-            <form v-bind:id="index" v-if="deletar && token" action="deletar" method="post">
+            <form
+              v-bind:id="item.id"
+              v-if="deletar && token"
+              v-bind:action="deletar + item.id"
+              method="post"
+            >
               <input type="hidden" name="_method" value="DELETE">
               <input type="hidden" name="_token" v-bind:value="token">
-              <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe |</a> |
+              <a v-if="detalhe && !modal" v-bind:href="detalhe">Detalhe |</a>
               <modallink
                 v-if="detalhe && modal"
                 nomemodal="detalhe"
                 label="Detalhe"
-                cor="btn-success"
+                cor="btn-outline-success"
+                v-bind:item="item"
+                v-bind:url="detalhe"
+                iconclass="fa fa-eye"
               ></modallink>
-              <a v-if="editar && !modal" v-bind:href="editar">Editar</a> |
-              <modallink v-if="editar && modal" nomemodal="editar" label="Editar" cor="btn-warning"></modallink>
+              <a v-if="editar && !modal" v-bind:href="editar">Editar |</a>
+              <modallink
+                v-if="editar && modal"
+                nomemodal="editar"
+                label="Editar"
+                cor="btn-outline-warning"
+                v-bind:item="item"
+                v-bind:url="editar"
+                iconclass="fa fa-edit"
+              ></modallink>
 
               <a v-if="deletar && !modal" v-bind:href="deletar" v-on:click="sendForm(index)">Deletar</a>
               <modallink
                 v-if="deletar && modal"
                 nomemodal="deletar"
                 label="Deletar"
-                cor="btn-danger"
+                cor="btn-outline-danger"
+                v-bind:url="deletar"
+                 v-bind:item="item"
+                iconclass="fa fa-trash"
               ></modallink>
             </form>
 
@@ -58,18 +77,32 @@
                 v-if="detalhe && modal"
                 nomemodal="detalhe"
                 label="Detalhe"
-                cor="btn-success"
+                cor="btn-outline-success"
+                v-bind:item="item"
+                v-bind:url="detalhe"
+                iconclass="fa fa-eye"
               ></modallink>
 
               <a v-if="editar && !modal" v-bind:href="editar">Editar |</a>
-              <modallink v-if="editar && modal" nomemodal="editar" label="Editar" cor="btn-warning"></modallink>
+              <modallink
+                v-if="editar && modal"
+                nomemodal="editar"
+                label="Editar"
+                cor="btn-outline-warning"
+                v-bind:item="item"
+                v-bind:url="editar"
+                iconclass="fa fa-edit"
+              ></modallink>
 
               <a v-if="deletar && !modal" v-bind:href="deletar">Deletar</a>
               <modallink
                 v-if="deletar && modal"
                 nomemodal="deletar"
                 label="Deletar"
-                cor="btn-danger"
+                cor="btn-outline-danger"
+                v-bind:url="deletar"
+                 v-bind:item="item"
+                iconclass="fa fa-trash"
               ></modallink>
             </span>
             
@@ -79,10 +112,21 @@
                 v-if="detalhe && modal"
                 nomemodal="detalhe"
                 label="Detalhe"
-                cor="btn-success"
+                cor="btn-outline-success"
+                v-bind:item="item"
+                v-bind:url="detalhe"
+                iconclass="fa fa-eye"
               ></modallink>
-              <a v-if="editar && !modal" v-bind:href="editar">Editar</a> |
-              <modallink v-if="editar && modal" nomemodal="editar" label="Editar" cor="btn-warning"></modallink>
+              <a v-if="editar && !modal" v-bind:href="editar">Editar |</a>
+              <modallink
+                v-if="editar && modal"
+                nomemodal="editar"
+                label="Editar"
+                cor="btn-outline-warning"
+                v-bind:item="item"
+                v-bind:url="editar"
+                iconclass="fa fa-edit"
+              ></modallink>
             </span>
           </td>
         </tr>
@@ -160,6 +204,7 @@ export default {
 
       if (this.buscar) {
         return this.itens.filter(res => {
+          res = Object.values(res);
           for (let k = 0; k < res.length; k++) {
             if (
               res[k]

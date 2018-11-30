@@ -9,6 +9,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import Vuex from 'Vuex';
+
+Vue.use(Vuex);
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -16,6 +20,20 @@ window.Vue = require('vue');
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
+
+//Vuex
+
+const store = new Vuex.Store({
+
+    state: {
+        itens: {},
+    },
+    mutations: {
+        setItens(state, obj) {
+            state.itens = obj;
+        }
+    }
+});
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('topo', require('./components/Topo.vue'));
@@ -41,5 +59,9 @@ Vue.component('formulario', require('./components/Formulario.vue'));
  */
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    store,
+    mounted: function() {
+        console.log("App Carregada");
+    },
 });
