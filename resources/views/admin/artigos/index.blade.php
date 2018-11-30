@@ -93,7 +93,7 @@
         <h3 class="text-white">
             Tem Certeza que deseja apagar permanentemente este Artigo?</h3>
         <span slot="botoes">
-           <button class="btn btn-danger" v-bind:form="$store.state.itens.id" type="submit">Confirmar</button>
+           <button class="btn btn-outline-danger" v-bind:form="$store.state.itens.id" type="submit">Confirmar</button>
        </span>
     </modal>
 
