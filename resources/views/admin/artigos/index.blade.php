@@ -16,9 +16,20 @@
     @endif
 
     <painel titulo="Lista de Artigos" tamanho="12" cor="bg-dark">
-        <tabela-lista v-bind:titulos="['#','Titulo', 'Autor','Descrição', 'Data']" v-bind:itens="{{ $listaArtigos }}" criar="#criar"
-            detalhe="/admin/artigos/" editar="/admin/artigos/" deletar="/admin/artigos/" ordemcol="0" ordem="asc" modal="sim" token="{{ csrf_token() }}">
+            
+        <tabela-lista 
+                    v-bind:titulos="['#','Titulo', 'Autor','Descrição','Data']" 
+                    v-bind:itens="{{ json_encode($listaArtigos) }}" 
+                    criar="#criar"
+                    detalhe="/admin/artigos/"
+                    editar="/admin/artigos/" 
+                    deletar="/admin/artigos/" 
+                    ordemcol="0" 
+                    ordem="asc" 
+                    modal="sim"
+                    token="{{ csrf_token() }}">
         </tabela-lista>
+        {{ $listaArtigos->links() }}
     </painel>
 
     <modal nome="adicionar" titulo="Adicionar Artigo" footer="sim" cordafonte="text-white">
@@ -82,14 +93,14 @@
 
     </modal>
 
-    <modal nome="detalhe" v-bind:titulo="$store.state.itens.titulo" footer="sim"  cordafonte="text-white">
+    <modal nome="detalhe" v-bind:titulo="$store.state.itens.titulo" footer="sim" cordafonte="text-white">
         <h4>Descrição</h4>
         <span>
             @{{ $store.state.itens.descricao}}
         </span>
     </modal>
 
-    <modal nome="deletar" titulo="Deletar Artigo" footer="sim" cor="bg-danger"  cordafonte="text-white">
+    <modal nome="deletar" titulo="Deletar Artigo" footer="sim" cor="bg-danger" cordafonte="text-white">
         <h3 class="text-white">
             Tem Certeza que deseja apagar permanentemente este Artigo?</h3>
         <span slot="botoes">

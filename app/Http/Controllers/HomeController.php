@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Artigo;
 
 class HomeController extends Controller
 {
@@ -26,6 +28,10 @@ class HomeController extends Controller
         $migalhas = json_encode([
             ['titulo'=>'Home', 'url'=>""] 
         ]);
-        return view('home',compact('migalhas'));
+
+        $countUsuarios = User::count();
+        $countAutores = User::where('autor','=','S')->count();
+        $countArtigos = Artigo::count();
+        return view('home',compact('migalhas','countUsuarios','countAutores','countArtigos'));
     }
 }

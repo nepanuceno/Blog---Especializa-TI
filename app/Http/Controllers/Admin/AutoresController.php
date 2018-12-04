@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\User;
+use Iluminate\Validation\Rule;
 
-use App\Artigo;
-
-class ArtigosController extends Controller
+class AutoresController extends Controller
 {
+   
     /**
      * Display a listing of the resource.
      *
@@ -17,20 +17,14 @@ class ArtigosController extends Controller
      */
     public function index()
     {
-
         $migalhas = json_encode([
             ['titulo'=>'Home', 'url'=>route('home')], 
-            ['titulo'=>'Lista de Artigos', 'url'=>'']
+            ['titulo'=>'Lista de Autores', 'url'=>'']
         ]);
 
-        //$listaArtigos =  Artigo::select('id','titulo','descricao','user_id','data')->paginate(5);
+        $listaAutores =  User::select('id','name','email')->where('autor','=','S')->paginate(10);
 
-        $listaArtigos = DB::table('artigos')
-            ->leftJoin('users','users.id','=','user_id')
-            ->select('artigos.id','artigos.titulo','users.name','artigos.descricao','artigos.data')
-            ->paginate(5);
-
-        return view('admin.artigos.index', compact('migalhas','listaArtigos'));
+        return view('admin.autores.index', compact('migalhas','listaAutores'));
     }
 
     /**
@@ -51,23 +45,21 @@ class ArtigosController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->all();
         $validation = \Validator::make($data, [
-            "titulo"=>"required",
-            "descricao" => "required",
-            "conteudo" => "required",
-            "data" => "required"
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6'],
         ]);
 
         if($validation->fails()){
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
-
+        $data['password'] = Hash::make($data['password']);
 
         try {
-                Artigo::create($data);
+                User::create($data);
                 return redirect()->back();
         } catch (\PDOException $e) {
             return json_encode([ 'error'=>$e ]);
@@ -82,7 +74,7 @@ class ArtigosController extends Controller
      */
     public function show($id)
     {
-        return Artigo::find($id);
+        return User::find($id);
     }
 
     /**
@@ -106,21 +98,28 @@ class ArtigosController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $validation = \Validator::make($data, [
-            "titulo"=>"required",
-            "descricao" => "required",
-            "conteudo" => "required",
-            "data" => "required"
-        ]);
+
+        if ( isset($data['password']) && $data['password'] != "" ) {
+
+            $validation = \Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
+                'password' => ['required', 'string', 'min:6'],
+            ]);
+        } else {
+            $validation = \Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
+            ]);
+            unset($data['password']);
+        }
 
         if($validation->fails()){
             return redirect()->back()->withErrors($validation)->withInput();
         }
 
-
-
         try {
-                Artigo::find($id)->update($data);
+                User::find($id)->update($data);
                 return redirect()->back();
         } catch (\PDOException $e) {
             return json_encode([ 'error'=>$e ]);
@@ -136,10 +135,10 @@ class ArtigosController extends Controller
     public function destroy($id)
     {
         try {
-            Artigo::find($id)->delete();
+            User::find($id)->delete();
             return redirect()->back();
-    } catch (\PDOException $e) {
-        return json_encode([ 'error'=>$e ]);
-    }
+        } catch (\PDOException $e) {
+            return json_encode([ 'error'=>$e ]);
+        }
     }
 }
