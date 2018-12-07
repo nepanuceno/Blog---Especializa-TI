@@ -19,16 +19,13 @@ class ArtigosController extends Controller
     {
 
         $migalhas = json_encode([
-            ['titulo'=>'Home', 'url'=>route('home')], 
+            ['titulo'=>'Administrador', 'url'=>route('admin')], 
             ['titulo'=>'Lista de Artigos', 'url'=>'']
         ]);
 
         //$listaArtigos =  Artigo::select('id','titulo','descricao','user_id','data')->paginate(5);
-
-        $listaArtigos = DB::table('artigos')
-            ->leftJoin('users','users.id','=','user_id')
-            ->select('artigos.id','artigos.titulo','users.name','artigos.descricao','artigos.data')
-            ->paginate(5);
+        
+        $listaArtigos = Artigo::listaArtigos(5);
 
         return view('admin.artigos.index', compact('migalhas','listaArtigos'));
     }

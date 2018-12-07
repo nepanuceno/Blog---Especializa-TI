@@ -47,7 +47,6 @@
             <div class="form-group">
                 <label for="conteudo">Conteúdo</label>
                 <textarea class="form-control" name="conteudo" id="conteudo" cols="30" rows="3">{{ old('conteudo') }}</textarea>
-
             </div>
             <div class="form-group">
                 <label for="data">Criação</label>

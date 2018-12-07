@@ -12,12 +12,16 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $lista = App\Artigo::listaArtigosSite(10);
+    return view('site',compact('lista'));
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/admin', 'AdminController@index')->name('admin');
+Route::get('/artigos/{id}/{titulo}', function(){
+    
+});
 
 Route::middleware(['auth'])->prefix('admin')->namespace('Admin')->group(function(){
 

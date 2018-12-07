@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Artigo;
 
-class HomeController extends Controller
+class AdminController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -26,7 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         $migalhas = json_encode([
-            ['titulo'=>'Home', 'url'=>""] 
+            ['titulo'=>'Administrador', 'url'=>""] 
         ]);
 
         $countUsuarios = User::count();

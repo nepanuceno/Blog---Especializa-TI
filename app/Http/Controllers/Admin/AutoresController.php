@@ -18,7 +18,7 @@ class AutoresController extends Controller
     public function index()
     {
         $migalhas = json_encode([
-            ['titulo'=>'Home', 'url'=>route('home')], 
+            ['titulo'=>'Administrador', 'url'=>route('admin')], 
             ['titulo'=>'Lista de Autores', 'url'=>'']
         ]);
 

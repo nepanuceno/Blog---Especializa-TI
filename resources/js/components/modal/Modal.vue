@@ -7,8 +7,8 @@
     v-bind:aria-labelledby="setNome"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div v-bind:class="setFontColor" style="background-color:rgba(20,20,20,0.9">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div v-bind:class="setFontColor" v-bind:style="setStyle">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">{{ titulo }}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  props: ["nome", "titulo", "footer", "cor", "cordafonte"],
+  props: ["nome", "titulo", "footer", "cor", "cordafonte","estilo"],
   computed: {
     setNome: function() {
       return this.nome;
@@ -47,6 +47,10 @@ export default {
 
     setFontColor: function() {
       return "modal-content " + this.cordafonte;
+    },
+
+    setStyle: function() {
+      return this.estilo;
     }
   }
 };
